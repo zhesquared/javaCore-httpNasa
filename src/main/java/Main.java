@@ -5,8 +5,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.*;
-import java.net.URL;
-
 
 public class Main {
 
@@ -27,25 +25,29 @@ public class Main {
 
     public static void saveFile(Answer answer) {
 
-//        String title = null;
-//        if ("video".equals(answer.getMediaType())) {
-            String link = answer.getUrl();
-            String preview = link.substring(link.lastIndexOf('/'),
-                    link.indexOf('?'));
-            String title = "https://img.youtube.com/vi" + preview + "/maxresdefault.jpg";
-//        }
+        String link;
+        String title;
+        if ("video".equals(answer.getMediaType())) {
+            String url = answer.getUrl();
+            String preview = url.substring(url.lastIndexOf('/'),
+                    url.indexOf('?'));
+            link = "https://img.youtube.com/vi" + preview + "/maxresdefault.jpg";
+            title = answer.getTitle() + ".jpg";
+        } else {
+            link = answer.getHdurl();
+            String[] path = answer.getHdurl().split("/");
+            title = path[path.length - 1];
+        }
 
-        file = new File("1.jpg");
+        file = new File(title);
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
-             CloseableHttpResponse contentResponse = httpClient.execute(new HttpGet(title)) //title
+             CloseableHttpResponse contentResponse = httpClient.execute(new HttpGet(link))
         ) {
-
             byte[] content = contentResponse.getEntity().getContent().readAllBytes();
             FileOutputStream output = new FileOutputStream(file);
             output.write(content);
             output.close();
-
         } catch (IOException exception) {
             exception.printStackTrace();
         }
