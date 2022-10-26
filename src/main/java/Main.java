@@ -24,9 +24,9 @@ public class Main {
     }
 
     public static void saveFile(Answer answer) {
-
         String link;
         String title;
+
         if ("video".equals(answer.getMediaType())) {
             String url = answer.getUrl();
             String preview = url.substring(url.lastIndexOf('/'),
