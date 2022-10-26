@@ -34,8 +34,8 @@ public class Main {
             link = "https://img.youtube.com/vi" + preview + "/maxresdefault.jpg";
             title = answer.getTitle() + ".jpg";
         } else {
-            link = answer.getHdurl();
-            String[] path = answer.getHdurl().split("/");
+            link = answer.getHdUrl();
+            String[] path = answer.getHdUrl().split("/");
             title = path[path.length - 1];
         }
 
